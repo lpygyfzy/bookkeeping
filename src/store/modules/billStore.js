@@ -7,13 +7,18 @@ const billStore = createSlice({
         billList:[]
     },
     reducers: {
+        //储存列表数据
         setBillLsit (state,action) {
             state.billList = action.payload
+        },
+        //增加列表数据
+        addBill (state,action) {
+            state.billList.push(action.payload)
         }
     }
 })
 //结构
-const { setBillLsit } = billStore.actions
+const { setBillLsit,addBill } = billStore.actions
 //异步请求
 const getBillList = () => {
     return async(dispath) => {
@@ -21,7 +26,14 @@ const getBillList = () => {
       dispath(setBillLsit(res.data))
     }
 }
-export {getBillList}
+//异步发送
+const addBillList = (data) => {
+    return async(dispath) => {
+      const res = await axios.post("http://localhost:8888/ka",data)
+      dispath(addBill(res.data))
+    }
+}
+export {getBillList,addBillList}
 
 const reducer = billStore.reducer
 export default reducer
